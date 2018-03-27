@@ -89,6 +89,12 @@ class Product(db.Model):
         return self.serialize().__repr__()
 
 
+sold_products = db.Table('sold-products',
+                         db.Column('order_id', db.Integer, db.ForeignKey('order-table.id', ondelete='CASCADE')),
+                         db.Column('product_id', db.Integer, db.ForeignKey('product-table.id', ondelete='CASCADE'))
+                         )
+
+
 class Order(db.Model):
     # Default __tablename__ = order
     __tablename__ = 'order-table'
@@ -96,12 +102,23 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer-table.id', ondelete='CASCADE'), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
+    products = db.relationship(
+        'Product',
+        secondary=sold_products,
+        backref=db.backref('order-table', lazy='joined'),
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        single_parent=True
+    )
+    total = db.Column(db.Integer, nullable=False)
 
     def serialize(self):
         return {
             'id': self.id,
             'customer_id': self.customer_id,
-            'date': self.date.strftime("%d/%m/%y %H:%M")
+            'date': self.date.strftime("%d/%m/%y"),
+            'products': [p.serialize() for p in self.products],
+            'total': self.total
         }
 
     def __repr__(self):

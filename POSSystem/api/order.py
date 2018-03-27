@@ -1,6 +1,6 @@
 from flask import Blueprint, request, Response, json
 from datetime import datetime
-from models import db, Order
+from models import db, Order, Product
 
 order_blueprint = Blueprint('order_blueprint', __name__)
 
@@ -10,8 +10,12 @@ def create():
     data = request.get_json()
     order = Order(
         customer_id=data['customer_id'],
-        date=datetime.strptime(data['date'], "%d/%m/%y")
+        date=datetime.strptime(data['date'], "%d/%m/%y"),
+        total=data['total']
     )
+    for product_id in data['products']:
+        product = Product.query.filter_by(id=product_id).first()
+        order.products.append(product)
     db.session.add(order)
     db.session.commit()
 
