@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Point-Of-Sale System</title>
+</head>
+<body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <h1>Products API Methods</h1>
+
+    <div>
+        <h2>Create | POST Method</h2>
+        <div id="post">
+            <label>Customer Id: <input id="customer_id" type="number"></label>
+            <label>Date: <input id="date" type="date"></label>
+            <label>Total: <input id="total" type="number"></label>
+            <label>Products: <input id="products" type="text"></label>
+            <button type="submit" onclick="sendPost()">CREATE</button>
+            <div id="response">
+                <pre></pre>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h2>Read | GET Method</h2>
+        <div id="get">
+            <label>Id: <input id="id" type="number"></label>
+            <button type="submit" onclick="sendGet()">READ</button>
+            <div id="response">
+                <pre></pre>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h2>Update | PUT Method</h2>
+        <div id="put">
+            <label>Id: <input id="id" type="number"></label>
+            <label>Customer Id: <input id="customer_id" type="number"></label>
+            <label>Date: <input id="date" type="date"></label>
+            <label>Total: <input id="total" type="number"></label>
+            <button type="submit" onclick="sendPut()">UPDATE</button>
+            <div id="response">
+                <pre></pre>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h2>Delete | DELETE Method</h2>
+        <div id="delete">
+            <label>Id: <input id="id" type="number"></label>
+            <button type="submit" onclick="sendDelete()">DELETE</button>
+            <div id="response">
+                <pre></pre>
+            </div>
+        </div>
+    </div>
+
+    <script type="application/javascript">
+
+        function sendPost() {
+            let date = new Date($("#post").find("input#date").val());
+            let data = {
+                category_id: $("#post").find("input#customer_id").val(),
+                date: [date.getUTCDate(), date.getUTCMonth(), date.getFullYear()].join('/'),
+                total: $("#post").find("input#total").val(),
+                products: $("#post").find("input#products").val().split(',').map(function (x) {
+                    return parseInt(x);
+                })
+            };
+            let request = $.ajax({
+                url: 'http://localhost:5000/products/',
+                method: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json'
+            });
+            request.done(function (data) {
+                $("#post").find("div#response > pre").html(JSON.stringify(data, undefined, 2));
+            });
+        }
+
+        function sendGet() {
+            let id = $("#get").find("input#id").val();
+            let request;
+            if (id > 0) {
+                request = $.getJSON(`http://localhost:5000/products/${id}`)
+            } else {
+                request = $.getJSON('http://localhost:5000/products/')
+            }
+            request.done(function (data) {
+                $("#get").find("div#response > pre").html(JSON.stringify(data, undefined, 2));
+            });
+
+        }
+
+        function sendPut() {
+            let id = $("#put").find("input#id").val();
+            let data = {
+                category_id: $("#post").find("input#customer_id").val(),
+                date: $("#post").find("input#date").val(),
+                total: $("#post").find("input#total").val()
+            };
+            if (id > 0) {
+                let request = $.ajax({
+                    url: `http://localhost:5000/products/${id}`,
+                    method: 'PUT',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json'
+                });
+                request.done(function (data) {
+                    $("#put").find("div#response > pre").html(JSON.stringify(data, undefined, 2));
+                });
+            }
+        }
+
+        function sendDelete() {
+            let id = $("#delete").find("input#id").val();
+            if (id > 0) {
+                let request = $.ajax({
+                    url: `http://localhost:5000/products/${id}`,
+                    method: 'DELETE',
+                    contentType: 'application/json'
+                });
+                request.done(function (data) {
+                    $("#delete").find("div#response > pre").html(JSON.stringify(data, undefined, 2));
+                });
+            }
+        }
+
+    </script>
+
+</body>
+</html>

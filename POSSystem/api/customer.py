@@ -10,7 +10,7 @@ def create():
     customer = Customer(
         name=data['name'],
         age=data['age'],
-        phone=data['age']
+        phone=data['phone']
     )
     db.session.add(customer)
     db.session.commit()

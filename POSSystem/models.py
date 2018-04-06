@@ -55,7 +55,8 @@ class Customer(db.Model):
             'id': self.id,
             'name': self.name,
             'age': self.age,
-            'phone': self.phone
+            'phone': self.phone,
+            'order': [o.serialize() for o in self.orders]
         }
 
     def __repr__(self):
