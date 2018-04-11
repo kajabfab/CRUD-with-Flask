@@ -10,7 +10,7 @@ def create():
     data = request.get_json()
     order = Order(
         customer_id=data['customer_id'],
-        date=datetime.strptime(data['date'], "%d/%m/%y"),
+        date=datetime.strptime(data['date'], "%d/%m/%Y"),
         total=data['total']
     )
     for product_id in data['products']:

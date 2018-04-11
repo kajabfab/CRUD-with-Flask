@@ -74,7 +74,7 @@
         function sendPost() {
             let date = new Date($("#post").find("input#date").val());
             let data = {
-                category_id: $("#post").find("input#customer_id").val(),
+                customer_id: $("#post").find("input#customer_id").val(),
                 date: [date.getUTCDate(), date.getUTCMonth(), date.getFullYear()].join('/'),
                 total: $("#post").find("input#total").val(),
                 products: $("#post").find("input#products").val().split(',').map(function (x) {
@@ -82,7 +82,7 @@
                 })
             };
             let request = $.ajax({
-                url: 'http://localhost:5000/products/',
+                url: 'http://localhost:5000/orders/',
                 method: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json'
@@ -96,9 +96,9 @@
             let id = $("#get").find("input#id").val();
             let request;
             if (id > 0) {
-                request = $.getJSON(`http://localhost:5000/products/${id}`)
+                request = $.getJSON(`http://localhost:5000/orders/${id}`)
             } else {
-                request = $.getJSON('http://localhost:5000/products/')
+                request = $.getJSON('http://localhost:5000/orders/')
             }
             request.done(function (data) {
                 $("#get").find("div#response > pre").html(JSON.stringify(data, undefined, 2));
@@ -109,13 +109,13 @@
         function sendPut() {
             let id = $("#put").find("input#id").val();
             let data = {
-                category_id: $("#post").find("input#customer_id").val(),
+                customer_id: $("#post").find("input#customer_id").val(),
                 date: $("#post").find("input#date").val(),
                 total: $("#post").find("input#total").val()
             };
             if (id > 0) {
                 let request = $.ajax({
-                    url: `http://localhost:5000/products/${id}`,
+                    url: `http://localhost:5000/orders/${id}`,
                     method: 'PUT',
                     data: JSON.stringify(data),
                     contentType: 'application/json'
@@ -130,7 +130,7 @@
             let id = $("#delete").find("input#id").val();
             if (id > 0) {
                 let request = $.ajax({
-                    url: `http://localhost:5000/products/${id}`,
+                    url: `http://localhost:5000/orders/${id}`,
                     method: 'DELETE',
                     contentType: 'application/json'
                 });

@@ -11,8 +11,8 @@ def create():
     product = Product(
         category_id=data['category_id'],
         name=data['name'],
-        mfd=datetime.strptime(data['mfd'], "%m/%y"),
-        exd=datetime.strptime(data['exd'], "%m/%y"),
+        mfd=datetime.strptime(data['mfd'], "%m/%Y"),
+        exd=datetime.strptime(data['exd'], "%m/%Y"),
         cost=data['cost']
     )
     db.session.add(product)

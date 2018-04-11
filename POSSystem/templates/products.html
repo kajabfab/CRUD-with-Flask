@@ -22,7 +22,7 @@
     <div>
         <h2>Create | POST Method</h2>
         <div id="post">
-        		<label>Category Id: <input id="category_id" type="number"></label>
+            <label>Category Id: <input id="category_id" type="number"></label>
             <label>Name: <input id="name" type="text"></label>
             <label>MFD: <input id="mfd" type="date"></label>
             <label>EXD: <input id="exd" type="date"></label>
@@ -78,7 +78,7 @@
             let mfd = new Date($("#post").find("input#mfd").val());
             let exd = new Date($("#post").find("input#exd").val());
             let data = {
-           			category_id: $("#post").find("input#category_id").val(),
+                category_id: $("#post").find("input#category_id").val(),
                 name: $("#post").find("input#name").val(),
                 mfd: [mfd.getUTCMonth(), mfd.getFullYear()].join('/'),
                 exd: [exd.getUTCMonth(), exd.getFullYear()].join('/'),
@@ -126,8 +126,8 @@
                     contentType: 'application/json'
                 });
                 request.done(function (data) {
-                $("#put").find("div#response > pre").html(JSON.stringify(data, undefined, 2));
-            });
+                    $("#put").find("div#response > pre").html(JSON.stringify(data, undefined, 2));
+                });
             }
         }
 
@@ -140,8 +140,8 @@
                     contentType: 'application/json'
                 });
                 request.done(function (data) {
-                $("#delete").find("div#response > pre").html(JSON.stringify(data, undefined, 2));
-            });
+                    $("#delete").find("div#response > pre").html(JSON.stringify(data, undefined, 2));
+                });
             }
         }
 
